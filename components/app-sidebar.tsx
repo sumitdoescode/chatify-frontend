@@ -5,7 +5,7 @@ import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Users from "./Users";
 // import Chats from "./Chats";
 
-export async function AppSidebar({ user }: { user: any }) {
+export async function AppSidebar({ user }: { user: { name: string; email: string; profileImage: string } }) {
     return (
         <Sidebar collapsible="offcanvas">
             <SidebarHeader>

@@ -26,8 +26,6 @@ const Users = async () => {
         }
         const data = await res.json();
         users = data.users;
-
-        console.log(users);
     } catch (error) {
         console.log(error);
     }
@@ -47,12 +45,6 @@ const Users = async () => {
     }
     return (
         <ItemGroup className="mt-5 gap-1">
-            {users.map((user: IUser) => (
-                <User key={user._id} {...user} />
-            ))}
-            {users.map((user: IUser) => (
-                <User key={user._id} {...user} />
-            ))}
             {users.map((user: IUser) => (
                 <User key={user._id} {...user} />
             ))}

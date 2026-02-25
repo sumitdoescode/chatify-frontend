@@ -16,7 +16,7 @@ export default async function MainLayout({ children }: Readonly<{ children: Reac
         redirect("/login");
     }
     const data = await res.json();
-    console.log(data);
+
     return (
         <SidebarProvider>
             <AppSidebar user={data.user} />

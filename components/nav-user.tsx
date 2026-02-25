@@ -22,6 +22,7 @@ import { flattenError } from "zod";
 import { Field, FieldDescription, FieldGroup, FieldError } from "@/components/ui/field";
 
 export function NavUser({ user }: { user: { name: string; email: string; profileImage: string } }) {
+    console.log({ user });
     const router = useRouter();
     const { isMobile } = useSidebar();
 
@@ -34,7 +35,7 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
     const [isSavingProfile, setIsSavingProfile] = useState(false);
 
     const [editProfileForm, setEditProfileForm] = useState<{ name: string; profileImage: File | null; profileImagePreview: string | null }>({
-        name: user.name,
+        name: user?.name || "",
         profileImage: null,
         profileImagePreview: null,
     });
@@ -146,14 +147,14 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
                 <SidebarMenuItem>
                     <DropdownMenu>
                         <DropdownMenuTrigger render={<SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />}>
-                            <Avatar>
-                                <AvatarImage src={user.profileImage} alt={user.name} />
-                                <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                            <Avatar className={"size-10"}>
+                                <AvatarImage src={user?.profileImage} alt={user?.name} />
+                                <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
                             </Avatar>
 
                             <div className="grid flex-1 text-left text-sm leading-tight">
-                                <span className="truncate font-medium">{user.name}</span>
-                                <span className="truncate text-xs">{user.email}</span>
+                                <span className="truncate font-medium">{user?.name}</span>
+                                <span className="truncate text-xs">{user?.email}</span>
                             </div>
 
                             <ChevronsUpDownIcon className="ml-auto size-4" />
@@ -163,14 +164,14 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
                             <DropdownMenuGroup>
                                 <DropdownMenuLabel className="p-0 font-normal">
                                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                        <Avatar>
-                                            <AvatarImage src={user.profileImage} alt={user.name} />
-                                            <AvatarFallback>{user.name.charAt(0).toUpperCase()}</AvatarFallback>
+                                        <Avatar className="size-9">
+                                            <AvatarImage src={user?.profileImage} alt={user?.name} />
+                                            <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
                                         </Avatar>
 
                                         <div className="grid flex-1 text-left text-sm leading-tight">
-                                            <span className="truncate font-medium">{user.name}</span>
-                                            <span className="truncate text-xs">{user.email}</span>
+                                            <span className="truncate font-medium">{user?.name}</span>
+                                            <span className="truncate text-xs">{user?.email}</span>
                                         </div>
                                     </div>
                                 </DropdownMenuLabel>
