@@ -1,48 +1,29 @@
-"use client";
-
-import * as React from "react";
-
-import { NavMain } from "@/components/nav-main";
-import { NavProjects } from "@/components/nav-projects";
 import { NavUser } from "@/components/nav-user";
-import { TeamSwitcher } from "@/components/team-switcher";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail } from "@/components/ui/sidebar";
-import { GalleryVerticalEndIcon, AudioLinesIcon, TerminalIcon, TerminalSquareIcon, BotIcon, BookOpenIcon, Settings2Icon, FrameIcon, PieChartIcon, MapIcon } from "lucide-react";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { GalleryVerticalEndIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
+import Users from "./Users";
+// import Chats from "./Chats";
 
-// This is sample data.
-const data = {
-    teams: [
-        {
-            name: "Chatify",
-            logo: <GalleryVerticalEndIcon />,
-            plan: "Real-time messages",
-        },
-    ],
-    projects: [
-        {
-            name: "Design Engineering",
-            url: "#",
-            icon: <FrameIcon />,
-        },
-        {
-            name: "Sales & Marketing",
-            url: "#",
-            icon: <PieChartIcon />,
-        },
-        {
-            name: "Travel",
-            url: "#",
-            icon: <MapIcon />,
-        },
-    ],
-};
-
-export function AppSidebar({ user }: { user: any }) {
+export async function AppSidebar({ user }: { user: any }) {
     return (
-        <Sidebar collapsible="icon">
+        <Sidebar collapsible="offcanvas">
             <SidebarHeader>
-                <TeamSwitcher teams={data.teams} />
+                <SidebarMenu>
+                    <SidebarMenuItem>
+                        <SidebarMenuButton size="lg">
+                            <div className="flex items-center gap-2">
+                                <div className="bg-sidebar-primary text-sidebar-primary-foreground flex aspect-square size-8 items-center justify-center rounded-lg">
+                                    <GalleryVerticalEndIcon />
+                                </div>
+                                <div className="grid flex-1 text-left text-sm leading-tight">
+                                    <span className="truncate font-sm">Chatify</span>
+                                    <span className="truncate text-xs">Realtime Messaging</span>
+                                </div>
+                            </div>
+                        </SidebarMenuButton>
+                    </SidebarMenuItem>
+                </SidebarMenu>
             </SidebarHeader>
 
             <SidebarContent>
@@ -55,9 +36,11 @@ export function AppSidebar({ user }: { user: any }) {
                             Users
                         </TabsTrigger>
                     </TabsList>
-                    <TabsContent value="chats"></TabsContent>
+                    {/* <TabsContent value="chats">
+                        <Chats />
+                    </TabsContent> */}
                     <TabsContent value="users">
-                        <NavProjects projects={data.projects} />
+                        <Users />
                     </TabsContent>
                 </Tabs>
             </SidebarContent>
@@ -65,7 +48,6 @@ export function AppSidebar({ user }: { user: any }) {
             <SidebarFooter>
                 <NavUser user={user} />
             </SidebarFooter>
-            <SidebarRail />
         </Sidebar>
     );
 }
