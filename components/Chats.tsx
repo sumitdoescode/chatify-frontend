@@ -1,46 +1,57 @@
-import React from "react";
-import { useState, useEffect } from "react";
-import axios from "axios";
-import { Empty, EmptyContent, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "@/components/ui/empty";
-import { Button } from "@/components/ui/button";
-import { MessageCircleMore } from "lucide-react";
+import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty";
+import { Users as UsersIcon } from "lucide-react";
+import { cookies } from "next/headers";
+import { ItemGroup } from "@/components/ui/item";
+import Chat from "./Chat";
 
-const Chats = () => {
-    const [chats, setChats] = useState([]);
-    useEffect(() => {
-        const fetchChats = async () => {
-            try {
-                const { data } = await axios.get("http://localhost:8000/api/chats", {
-                    withCredentials: true,
-                });
-                setChats(data.chats);
-            } catch (error) {
-                console.log(error);
-            }
-        };
-        fetchChats();
-    }, []);
+export interface IChat {
+    _id: string;
+    name: string;
+    email: string;
+    profileImage?: string;
+    lastMessage?: string;
+    unreadCount?: number;
+    createdAt?: string;
+}
+
+const Chats = async () => {
+    const cookieStore = await cookies();
+
+    let chats: IChat[] = [];
+    try {
+        const res = await fetch("http://localhost:8000/api/chats", {
+            headers: {
+                Cookie: cookieStore.toString(),
+            },
+        });
+        if (!res.ok) {
+            throw new Error("Failed to fetch chats");
+        }
+        const data = await res.json();
+        chats = data.chats;
+    } catch (error) {
+        console.log(error);
+    }
 
     if (!chats.length) {
         return (
             <Empty>
                 <EmptyHeader>
                     <EmptyMedia variant="icon">
-                        <MessageCircleMore />
+                        <UsersIcon />
                     </EmptyMedia>
-                    <EmptyTitle>No Chats Yet</EmptyTitle>
-                    <EmptyDescription>Go to Users to start chatting with others..</EmptyDescription>
+                    <EmptyTitle>No Users Yet</EmptyTitle>
+                    <EmptyDescription>Our application currently doesn't have any users. Please try again later.</EmptyDescription>
                 </EmptyHeader>
             </Empty>
         );
     }
-
     return (
-        <div>
-            {chats.map((chat: any) => (
-                <div key={chat._id}>{chat.name}</div>
+        <ItemGroup className="mt-5 gap-1">
+            {chats.map((chat: IChat) => (
+                <Chat key={chat._id} {...chat} />
             ))}
-        </div>
+        </ItemGroup>
     );
 };
 

@@ -3,7 +3,7 @@ import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, Sid
 import { GalleryVerticalEndIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Users from "./Users";
-// import Chats from "./Chats";
+import Chats from "./Chats";
 
 export async function AppSidebar({ user }: { user: { name: string; email: string; profileImage: string } }) {
     return (
@@ -36,9 +36,9 @@ export async function AppSidebar({ user }: { user: { name: string; email: string
                             Users
                         </TabsTrigger>
                     </TabsList>
-                    {/* <TabsContent value="chats">
+                    <TabsContent value="chats">
                         <Chats />
-                    </TabsContent> */}
+                    </TabsContent>
                     <TabsContent value="users">
                         <Users />
                     </TabsContent>

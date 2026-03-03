@@ -1,26 +1,58 @@
-import Image from "next/image";
+"use client";
 
-function MessageBubble({ isOwn, children }: { isOwn?: boolean; children: React.ReactNode }) {
-    return <div className={`max-w-xs w-fit px-4 py-2 rounded-2xl text-sm ${isOwn ? "ml-auto bg-primary text-primary-foreground" : "bg-muted text-foreground"}`}>{children}</div>;
+import { useEffect, useRef } from "react";
+
+function formatMessageTime(date?: string) {
+    if (!date) return "--:--";
+    const parsed = new Date(date);
+    if (Number.isNaN(parsed.getTime())) return "--:--";
+    return parsed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
 }
 
-export function ChatContent({ messages }: { messages: any[] }) {
+interface IMessage {
+    _id: string;
+    sender: string;
+    receiver: string;
+    text?: string;
+    image?: string;
+    createdAt?: string;
+}
+
+export function ChatContent({ messages, otherUserId }: { messages: IMessage[]; otherUserId: string }) {
+    const scrollRef = useRef<HTMLDivElement>(null);
+
+    useEffect(() => {
+        if (!scrollRef.current) return;
+        scrollRef.current.scrollTo({
+            top: scrollRef.current.scrollHeight,
+            behavior: "smooth",
+        });
+    }, [messages]);
+
+    if (!messages.length) {
+        return <div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">No messages yet. Start the conversation.</div>;
+    }
+
     return (
-        <div className="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
-            {/* Incoming */}
-            <MessageBubble>Hey man!</MessageBubble>
+        <div ref={scrollRef} className="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
+            {messages.map((message) => {
+                const isOwn = message.receiver === otherUserId;
+                return (
+                    <div key={message._id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>
+                        <div className={`max-w-xs rounded-xl ${message.text && !message.image ? "px-3" : "px-1.5"} py-1.5 ${isOwn ? "bg-primary/90 text-primary-foreground" : "bg-muted text-foreground"}`}>
+                            {message.image ? (
+                                <a href={message.image} target="_blank" rel="noreferrer">
+                                    <img src={message.image} alt="message attachment" className="mb-1 max-w-full max-h-80 rounded-xl border object-cover" loading="lazy" />
+                                </a>
+                            ) : null}
 
-            {/* Outgoing */}
-            <MessageBubble isOwn>Yo sup?!</MessageBubble>
+                            {message.text ? <p className="text-sm whitespace-pre-wrap wrap-break-word">{message.text}</p> : null}
 
-            {/* Image Message */}
-            {/* <div className="ml-auto flex flex-col gap-2 items-end">
-                <div className="rounded-xl overflow-hidden border bg-muted">
-                    <Image src="/demo.jpg" alt="shared" width={200} height={200} className="object-cover" />
-                </div>
-
-                <MessageBubble isOwn>Look where i am at the moment! 😄</MessageBubble>
-            </div> */}
+                            <p className={`mt-1 text-[11px] ${isOwn ? "text-primary-foreground" : "text-muted-foreground"} text-right`}>{formatMessageTime(message.createdAt)}</p>
+                        </div>
+                    </div>
+                );
+            })}
         </div>
     );
 }

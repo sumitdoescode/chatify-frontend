@@ -95,7 +95,9 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
             formData.append("oldProfileImage", user.profileImage);
         }
 
-        const { data } = await axios.post("/api/upload", formData);
+        const { data } = await axios.post("http://localhost:8000/api/users/profile-image", formData, {
+            withCredentials: true,
+        });
         return data.profileImageUrl;
     };
 
