@@ -10,7 +10,7 @@ const Chat = ({ _id, name, profileImage, lastMessage, unreadCount, createdAt }: 
         <Link href={`/chat/${_id}`}>
             <Item key={_id} className="border border-border hover:bg-secondary cursor-pointer">
                 <ItemMedia>
-                    <Avatar className="size-10">
+                    <Avatar className="size-12">
                         <AvatarImage src={profileImage} />
                         <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
                         <AvatarBadge className="bg-green-600 dark:bg-green-600" />
@@ -18,12 +18,12 @@ const Chat = ({ _id, name, profileImage, lastMessage, unreadCount, createdAt }: 
                 </ItemMedia>
 
                 <ItemContent>
-                    <ItemTitle className="text-sm">{name}</ItemTitle>
+                    <ItemTitle className="text-base">{name}</ItemTitle>
                     <ItemDescription className="-mt-1 text-xs line-clamp-1">{lastMessage?.slice(0, 30) + "..." || "No messages yet"}</ItemDescription>
                 </ItemContent>
 
                 <ItemActions className={`flex flex-col gap-0 items-end min-w-16`}>
-                    <span className="text-[10px] text-muted-foreground">{dayjs(createdAt).format("HH:mm")}</span>
+                    <span className="text-xs text-muted-foreground">{dayjs(createdAt).format("HH:mm")}</span>
                     {Boolean(unreadCount) && (
                         <Badge variant="secondary" className="font-mono rounded-full bg-white text-black border border-black min-w-6 h-6 px-1.5 justify-center">
                             {unreadCount}

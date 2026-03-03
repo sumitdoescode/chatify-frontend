@@ -16,7 +16,7 @@ const Users = async () => {
 
     let users: IUser[] = [];
     try {
-        const res = await fetch("http://localhost:8000/api/users", {
+        const res = await fetch(`${process.env.BACKEND_URL}/api/users`, {
             headers: {
                 Cookie: cookieStore.toString(),
             },

@@ -31,7 +31,7 @@ export function SignupForm({ className, ...props }: React.ComponentProps<"div">)
     const register = async (formData: z.infer<typeof RegisterSchema>) => {
         try {
             setLoading(true);
-            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/register`, formData);
+            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/register`, formData);
             if (data.success) {
                 toast.success("Verify your email and login to continue");
                 router.push("/login");

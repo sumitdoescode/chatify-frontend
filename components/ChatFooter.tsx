@@ -48,7 +48,7 @@ export function ChatFooter({ receiverId }: { receiverId: string }) {
             if (message.trim()) formData.append("text", message.trim());
             if (image) formData.append("image", image);
 
-            await axios.post(`http://localhost:8000/api/messages/${receiverId}`, formData, {
+            await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/messages/${receiverId}`, formData, {
                 withCredentials: true,
             });
 

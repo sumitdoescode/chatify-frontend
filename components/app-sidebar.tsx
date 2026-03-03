@@ -4,8 +4,21 @@ import { GalleryVerticalEndIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Users from "./Users";
 import Chats from "./Chats";
+import { cookies } from "next/headers";
+import { redirect } from "next/navigation";
 
-export async function AppSidebar({ user }: { user: { name: string; email: string; profileImage: string } }) {
+export async function AppSidebar() {
+    const cookieStore = await cookies();
+
+    const res = await fetch(`${process.env.BACKEND_URL}/api/users/me`, {
+        headers: {
+            Cookie: cookieStore.toString(),
+        },
+    });
+    if (res.status === 401) {
+        redirect("/login");
+    }
+    const { user } = await res.json();
     return (
         <Sidebar collapsible="offcanvas">
             <SidebarHeader>

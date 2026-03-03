@@ -14,7 +14,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     let receiverId = "";
 
     try {
-        const chatRes = await fetch(`http://localhost:8000/api/chats/${id}`, { headers });
+        const chatRes = await fetch(`${process.env.BACKEND_URL}/api/chats/${id}`, { headers });
         if (!chatRes.ok) {
             notFound();
         }
@@ -23,7 +23,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         user = chatData?.chat?.otherParticipant || null;
         receiverId = user?._id || "";
 
-        const messagesRes = await fetch(`http://localhost:8000/api/chats/${id}/messages?page=1&limit=50`, { headers });
+        const messagesRes = await fetch(`${process.env.BACKEND_URL}/api/chats/${id}/messages?page=1&limit=50`, { headers });
         if (messagesRes.ok) {
             const messagesData = await messagesRes.json();
             messages = messagesData.messages || [];

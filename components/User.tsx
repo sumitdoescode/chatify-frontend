@@ -18,7 +18,7 @@ const User = ({ _id, name, email, profileImage }: IUser) => {
         try {
             setResolving(true);
             const { data } = await axios.post(
-                "http://localhost:8000/api/chats/resolve",
+                `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/resolve`,
                 { userId: _id },
                 {
                     withCredentials: true,
@@ -37,19 +37,19 @@ const User = ({ _id, name, email, profileImage }: IUser) => {
     return (
         <Item key={_id} className="border border-border hover:bg-secondary cursor-pointer" onClick={openChat}>
             <ItemMedia>
-                <Avatar className="size-10">
+                <Avatar className="size-12">
                     <AvatarImage src={profileImage} />
                     <AvatarFallback>{name.charAt(0)}</AvatarFallback>
                     <AvatarBadge className="bg-green-600 dark:bg-green-600" />
                 </Avatar>
             </ItemMedia>
             <ItemContent>
-                <ItemTitle className="text-sm">{name}</ItemTitle>
+                <ItemTitle className="text-base">{name}</ItemTitle>
                 <ItemDescription className="-mt-1 text-xs">{email}</ItemDescription>
             </ItemContent>
             <ItemActions>
                 <Button variant="ghost" size="icon" className="size-8" disabled={resolving}>
-                    {resolving ? <Spinner /> : <PlusIcon />}
+                    {resolving ? <Spinner className="size-6" /> : <PlusIcon className="size-6" />}
                 </Button>
             </ItemActions>
         </Item>

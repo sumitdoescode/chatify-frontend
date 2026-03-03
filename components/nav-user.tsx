@@ -22,7 +22,6 @@ import { flattenError } from "zod";
 import { Field, FieldDescription, FieldGroup, FieldError } from "@/components/ui/field";
 
 export function NavUser({ user }: { user: { name: string; email: string; profileImage: string } }) {
-    console.log({ user });
     const router = useRouter();
     const { isMobile } = useSidebar();
 
@@ -95,7 +94,7 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
             formData.append("oldProfileImage", user.profileImage);
         }
 
-        const { data } = await axios.post("http://localhost:8000/api/users/profile-image", formData, {
+        const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/profile-image`, formData, {
             withCredentials: true,
         });
         return data.profileImageUrl;
@@ -149,7 +148,7 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
                 <SidebarMenuItem>
                     <DropdownMenu>
                         <DropdownMenuTrigger render={<SidebarMenuButton size="lg" className="aria-expanded:bg-muted" />}>
-                            <Avatar className={"size-10"}>
+                            <Avatar className={"size-11"}>
                                 <AvatarImage src={user?.profileImage} alt={user?.name} />
                                 <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
                             </Avatar>
@@ -166,7 +165,7 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
                             <DropdownMenuGroup>
                                 <DropdownMenuLabel className="p-0 font-normal">
                                     <div className="flex items-center gap-2 px-1 py-1.5 text-left text-sm">
-                                        <Avatar className="size-9">
+                                        <Avatar className="size-11">
                                             <AvatarImage src={user?.profileImage} alt={user?.name} />
                                             <AvatarFallback>{user?.name?.charAt(0).toUpperCase()}</AvatarFallback>
                                         </Avatar>

@@ -19,7 +19,7 @@ const Chats = async () => {
 
     let chats: IChat[] = [];
     try {
-        const res = await fetch("http://localhost:8000/api/chats", {
+        const res = await fetch(`${process.env.BACKEND_URL}/api/chats`, {
             headers: {
                 Cookie: cookieStore.toString(),
             },

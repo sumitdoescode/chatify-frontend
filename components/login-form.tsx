@@ -28,7 +28,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
     const login = async (formData: z.infer<typeof LoginSchema>) => {
         try {
             setLoading(true);
-            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/users/login`, formData, { withCredentials: true });
+            const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/login`, formData, { withCredentials: true });
             if (data.success) {
                 toast.success("Login successful");
                 // console.log(data);

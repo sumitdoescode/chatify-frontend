@@ -19,7 +19,7 @@ export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: stri
         if (!chatId) return;
         try {
             setDeleting(true);
-            await axios.delete(`http://localhost:8000/api/chats/${chatId}`, {
+            await axios.delete(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/${chatId}`, {
                 withCredentials: true,
             });
             toast.success("Chat deleted");
@@ -36,16 +36,16 @@ export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: stri
     return (
         <div className="flex items-center justify-between p-4 border-b bg-background">
             <div className="flex items-center gap-3">
-                <Avatar>
+                <Avatar className="size-12">
                     <AvatarImage src={user?.profileImage} />
                     <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
                 </Avatar>
 
                 <div>
-                    <p className="text-sm font-medium">
+                    <p className="text-base font-medium">
                         {user?.name} {user?.email ? <span className="text-muted-foreground font-normal">({user.email})</span> : null}
                     </p>
-                    <p className="text-xs text-muted-foreground">Online</p>
+                    <p className="text-sm text-muted-foreground">Online</p>
                 </div>
             </div>
 
