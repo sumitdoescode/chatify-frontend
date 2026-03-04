@@ -8,6 +8,7 @@ import { Spinner } from "./ui/spinner";
 import { useRouter } from "next/navigation";
 
 export function ChatFooter({ receiverId }: { receiverId: string }) {
+    const keystrokeSounds = ["/sounds/keystroke1.mp3", "/sounds/keystroke2.mp3", "/sounds/keystroke3.mp3", "/sounds/keystroke4.mp3"];
     const router = useRouter();
     const fileInputRef = useRef<HTMLInputElement>(null);
     const messageInputRef = useRef<HTMLInputElement>(null);
@@ -35,6 +36,13 @@ export function ChatFooter({ receiverId }: { receiverId: string }) {
     const clearImage = () => {
         setImage(null);
         if (fileInputRef.current) fileInputRef.current.value = "";
+    };
+
+    const playRandomKeystroke = () => {
+        const randomIndex = Math.floor(Math.random() * keystrokeSounds.length);
+        const audio = new Audio(keystrokeSounds[randomIndex]);
+        audio.volume = 0.5;
+        void audio.play().catch(() => {});
     };
 
     const sendMessage = async (e: React.FormEvent<HTMLFormElement>) => {
@@ -75,7 +83,16 @@ export function ChatFooter({ receiverId }: { receiverId: string }) {
             )}
 
             <div className="flex items-center gap-2">
-                <Input ref={messageInputRef} placeholder="Type your message..." className="flex-1" value={message} onChange={(e) => setMessage(e.target.value)} />
+                <Input
+                    ref={messageInputRef}
+                    placeholder="Type your message..."
+                    className="flex-1"
+                    value={message}
+                    onChange={(e) => {
+                        setMessage(e.target.value);
+                        playRandomKeystroke();
+                    }}
+                />
 
                 <Input
                     ref={fileInputRef}
