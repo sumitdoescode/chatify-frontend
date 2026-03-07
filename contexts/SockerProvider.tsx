@@ -17,6 +17,7 @@ const SocketContext = createContext<SocketContextType>({
 export default function SocketProvider({ children }: { children: React.ReactNode }) {
     const [socket, setSocket] = useState<Socket | null>(null);
     const [onlineUsersId, setOnlineUsersId] = useState<string[]>([]);
+
     useEffect(() => {
         const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL!, {
             withCredentials: true,
@@ -25,10 +26,12 @@ export default function SocketProvider({ children }: { children: React.ReactNode
             setOnlineUsersId(users);
         });
         setSocket(socket);
+
         return () => {
             socket.disconnect();
         };
     }, []);
+
     return <SocketContext.Provider value={{ socket, onlineUsersId }}>{children}</SocketContext.Provider>;
 }
 

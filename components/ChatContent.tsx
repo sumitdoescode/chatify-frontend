@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef } from "react";
+import { useEffect, useRef, useState } from "react";
 import dayjs from "dayjs";
+import { useSocket } from "@/contexts/SockerProvider";
 
 interface IMessage {
     _id: string;
@@ -10,10 +11,19 @@ interface IMessage {
     text?: string;
     image?: string;
     createdAt?: string;
+    chat: string;
 }
 
-export function ChatContent({ messages, otherUserId }: { messages: IMessage[]; otherUserId: string }) {
+export function ChatContent({ chatId, messages, otherUserId }: { chatId: string; messages: IMessage[]; otherUserId: string }) {
     const scrollRef = useRef<HTMLDivElement>(null);
+
+    const { socket } = useSocket();
+
+    const [localMessages, setLocalMessages] = useState<IMessage[]>(messages);
+
+    useEffect(() => {
+        setLocalMessages(messages);
+    }, [messages, chatId]);
 
     useEffect(() => {
         if (!scrollRef.current) return;
@@ -21,15 +31,28 @@ export function ChatContent({ messages, otherUserId }: { messages: IMessage[]; o
             top: scrollRef.current.scrollHeight,
             behavior: "smooth",
         });
-    }, [messages]);
+    }, [localMessages]);
 
-    if (!messages.length) {
+    useEffect(() => {
+        if (!socket) return;
+
+        const onNewMessage = (msg: IMessage) => {
+            if (String(msg.chat) !== chatId) return;
+            setLocalMessages((prev) => [...prev, msg]);
+        };
+
+        socket.on("message:new", onNewMessage);
+        return () => socket.off("message:new", onNewMessage);
+    }, [socket, chatId]);
+
+    if (!localMessages.length) {
         return <div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">No messages yet. Start the conversation.</div>;
     }
 
     return (
         <div ref={scrollRef} className="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
-            {messages.map((message) => {
+            {/* messages */}
+            {localMessages.map((message) => {
                 const isOwn = message.receiver === otherUserId;
                 return (
                     <div key={message._id} className={`flex ${isOwn ? "justify-end" : "justify-start"}`}>

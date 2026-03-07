@@ -1,5 +1,4 @@
 "use client";
-
 import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { IUser } from "./Users";
 import { Button } from "@/components/ui/button";
@@ -10,10 +9,14 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
+import { useSocket } from "@/contexts/SockerProvider";
 
 export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: string }) {
     const router = useRouter();
     const [deleting, setDeleting] = useState(false);
+
+    const { onlineUsersId } = useSocket();
+    const isOnline = onlineUsersId.includes(user?._id!);
 
     const deleteChat = async () => {
         if (!chatId) return;
@@ -45,7 +48,7 @@ export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: stri
                     <p className="text-base font-medium">
                         {user?.name} {user?.email ? <span className="text-muted-foreground font-normal">({user.email})</span> : null}
                     </p>
-                    <p className="text-sm text-muted-foreground">Online</p>
+                    <p className="text-sm text-muted-foreground">{isOnline ? "Online" : "Offline"}</p>
                 </div>
             </div>
 

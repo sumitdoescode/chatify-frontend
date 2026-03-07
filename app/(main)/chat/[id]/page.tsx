@@ -36,7 +36,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     return (
         <div className="h-screen flex flex-col">
             <ChatHeader user={user} chatId={id} />
-            <ChatContent messages={messages} otherUserId={receiverId} />
+            <ChatContent key={id} chatId={id} messages={messages} otherUserId={receiverId} />
             <ChatFooter receiverId={receiverId} />
         </div>
     );
