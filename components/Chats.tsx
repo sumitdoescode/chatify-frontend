@@ -10,8 +10,10 @@ export interface IChat {
     email: string;
     profileImage?: string;
     lastMessage?: string;
+    lastMessageIsImage?: boolean;
     unreadCount?: number;
     createdAt?: string;
+    otherParticipantId?: string;
 }
 
 const Chats = async () => {
@@ -29,8 +31,10 @@ const Chats = async () => {
         }
         const data = await res.json();
         chats = data.chats;
+        console.log({ chats });
     } catch (error) {
         console.log(error);
+        // toast("Failed to fetch chats");
     }
 
     if (!chats.length) {

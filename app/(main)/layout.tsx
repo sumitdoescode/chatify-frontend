@@ -1,7 +1,7 @@
 import { SidebarProvider } from "@/components/ui/sidebar";
 import { AppSidebar } from "@/components/app-sidebar";
 import { SidebarInset, SidebarTrigger } from "@/components/ui/sidebar";
-import SocketProvider from "@/components/socket-provider";
+import SocketProvider from "@/contexts/SockerProvider";
 
 export default async function MainLayout({ children }: Readonly<{ children: React.ReactNode }>) {
     return (

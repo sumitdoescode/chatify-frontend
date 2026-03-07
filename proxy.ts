@@ -2,10 +2,12 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
+    console.log("coming inside proxy.ts");
     const { pathname } = request.nextUrl;
     const isAuthPage = pathname === "/login" || pathname === "/register";
-    const isProtectedPage = pathname === "/" || pathname === "/chat";
+    const isProtectedPage = pathname === "/" || pathname.startsWith("/chat");
 
+    // if both are false
     if (!isAuthPage && !isProtectedPage) {
         return NextResponse.next();
     }
@@ -25,8 +27,6 @@ export async function proxy(request: NextRequest) {
         isLoggedIn = false;
     }
 
-    console.log({ isProtectedPage, isLoggedIn });
-
     if (isProtectedPage && !isLoggedIn) {
         return NextResponse.redirect(new URL("/login", request.url));
     }
@@ -39,5 +39,5 @@ export async function proxy(request: NextRequest) {
 }
 
 export const config = {
-    matcher: ["/:path*", "/chat/:path*", "/login/:path*", "/register/:path*"],
+    matcher: ["/", "/chat/:path*", "/login/:path*", "/register/:path*"],
 };

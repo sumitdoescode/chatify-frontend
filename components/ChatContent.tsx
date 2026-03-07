@@ -1,13 +1,7 @@
 "use client";
 
 import { useEffect, useRef } from "react";
-
-function formatMessageTime(date?: string) {
-    if (!date) return "--:--";
-    const parsed = new Date(date);
-    if (Number.isNaN(parsed.getTime())) return "--:--";
-    return parsed.toLocaleTimeString([], { hour: "2-digit", minute: "2-digit" });
-}
+import dayjs from "dayjs";
 
 interface IMessage {
     _id: string;
@@ -48,7 +42,7 @@ export function ChatContent({ messages, otherUserId }: { messages: IMessage[]; o
 
                             {message.text ? <p className="text-sm whitespace-pre-wrap wrap-break-word">{message.text}</p> : null}
 
-                            <p className={`mt-1 text-[11px] ${isOwn ? "text-primary-foreground" : "text-muted-foreground"} text-right`}>{formatMessageTime(message.createdAt)}</p>
+                            <p className={`mt-1 text-[11px] ${isOwn ? "text-primary-foreground" : "text-muted-foreground"} text-right`}>{dayjs(message.createdAt).format("HH:mm")}</p>
                         </div>
                     </div>
                 );
