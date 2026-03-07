@@ -15,9 +15,9 @@ export async function AppSidebar() {
             Cookie: cookieStore.toString(),
         },
     });
-    if (res.status === 401) {
-        redirect("/login");
-    }
+    // if (res.status === 401) {
+    //     redirect("/login");
+    // }
     const { user } = await res.json();
     return (
         <Sidebar collapsible="offcanvas">

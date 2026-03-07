@@ -5,7 +5,7 @@ import { MessageCircleMore } from "lucide-react";
 
 const page = () => {
     return (
-        <div className="flex items-center justify-center min-h-screen -mt-10">
+        <div className="flex items-center justify-center min-h-screen -mt-5">
             <Empty>
                 <EmptyHeader>
                     <EmptyMedia variant="icon">
