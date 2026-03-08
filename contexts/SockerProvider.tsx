@@ -18,7 +18,7 @@ export default function SocketProvider({ children }: { children: React.ReactNode
     const [onlineUsersId, setOnlineUsersId] = useState<string[]>([]);
 
     useEffect(() => {
-        const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL!, {
+        const socket = io(process.env.NEXT_PUBLIC_SOCKET_IO_URL!, {
             withCredentials: true,
         });
         socket.on("getOnlineUsers", (users: string[]) => {

@@ -69,7 +69,7 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
     const deleteAccount = async () => {
         setIsDeleteEmailSending(true);
         await authClient.deleteUser({
-            callbackURL: `${process.env.NEXT_PUBLIC_BASE_URL}/register`,
+            callbackURL: `${process.env.NEXT_PUBLIC_FRONTEND_URL}/register`,
         });
         setIsDeleteEmailSending(false);
         setIsDeleteEmailSent(true);
