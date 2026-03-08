@@ -1,8 +1,7 @@
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty";
 import { Users as UsersIcon } from "lucide-react";
 import { cookies } from "next/headers";
-import { ItemGroup } from "@/components/ui/item";
-import Chat from "./Chat";
+import ChatsClient from "./ChatsClient";
 
 export interface IChat {
     _id: string;
@@ -31,7 +30,6 @@ const Chats = async () => {
         }
         const data = await res.json();
         chats = data.chats;
-        console.log({ chats });
     } catch (error) {
         console.log(error);
         // toast("Failed to fetch chats");
@@ -45,18 +43,12 @@ const Chats = async () => {
                         <UsersIcon />
                     </EmptyMedia>
                     <EmptyTitle>No Users Yet</EmptyTitle>
-                    <EmptyDescription>Our application currently doesn't have any users. Please try again later.</EmptyDescription>
+                    <EmptyDescription>Our application currently doesn&apos;t have any users. Please try again later.</EmptyDescription>
                 </EmptyHeader>
             </Empty>
         );
     }
-    return (
-        <ItemGroup className="mt-5 gap-1">
-            {chats.map((chat: IChat) => (
-                <Chat key={chat._id} {...chat} />
-            ))}
-        </ItemGroup>
-    );
+    return <ChatsClient initialChats={chats} />;
 };
 
 export default Chats;

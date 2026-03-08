@@ -1,4 +1,3 @@
-import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Badge } from "@/components/ui/badge";
 import { IChat } from "./Chats";
@@ -8,17 +7,12 @@ import { ImageIcon } from "lucide-react";
 import AvatarWithIndicator from "./AvatarWithIndicator";
 
 const Chat = ({ _id, name, profileImage, lastMessage, lastMessageIsImage, unreadCount, createdAt, otherParticipantId }: IChat) => {
-    const previewText = lastMessage ? `${lastMessage.slice(0, 30)}...` : "No messages yet";
+    const previewText = lastMessage ? `${lastMessage.slice(0, 25)}...` : "No messages yet";
 
     return (
         <Link href={`/chat/${_id}`}>
             <Item key={_id} className="border border-border hover:bg-secondary cursor-pointer">
                 <ItemMedia>
-                    {/* <Avatar className="size-12">
-                        <AvatarImage src={profileImage} />
-                        <AvatarFallback>{name?.charAt(0)}</AvatarFallback>
-                        <AvatarBadge className="bg-green-600 dark:bg-green-600" />
-                    </Avatar> */}
                     <AvatarWithIndicator otherParticipantId={otherParticipantId} profileImage={profileImage} name={name} />
                 </ItemMedia>
 

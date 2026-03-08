@@ -26,7 +26,6 @@ const Users = async () => {
         }
         const data = await res.json();
         users = data.users;
-        console.log({ users });
     } catch (error) {
         console.log(error);
     }

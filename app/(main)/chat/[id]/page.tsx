@@ -9,9 +9,16 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     const cookieStore = await cookies();
     const headers = { Cookie: cookieStore.toString() };
 
-    let user: any = null;
+    let user = null;
     let messages: any[] = [];
     let receiverId = "";
+    let pagination = {
+        page: 1,
+        limit: 50,
+        totalPages: 1,
+        hasNext: false,
+        hasPrev: false,
+    };
 
     try {
         const chatRes = await fetch(`${process.env.BACKEND_URL}/api/chats/${id}`, { headers });
@@ -27,6 +34,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
         if (messagesRes.ok) {
             const messagesData = await messagesRes.json();
             messages = messagesData.messages || [];
+            pagination = messagesData.pagination || pagination;
         }
     } catch (error) {
         console.log(error);
@@ -36,7 +44,7 @@ const page = async ({ params }: { params: Promise<{ id: string }> }) => {
     return (
         <div className="h-screen flex flex-col">
             <ChatHeader user={user} chatId={id} />
-            <ChatContent key={id} chatId={id} messages={messages} otherUserId={receiverId} />
+            <ChatContent key={id} chatId={id} messages={messages} otherUserId={receiverId} pagination={pagination} />
             <ChatFooter receiverId={receiverId} />
         </div>
     );

@@ -38,11 +38,6 @@ const User = ({ _id, name, email, profileImage }: IUser) => {
     return (
         <Item key={_id} className="border border-border hover:bg-secondary cursor-pointer" onClick={openChat}>
             <ItemMedia>
-                {/* <Avatar className="size-12">
-                    <AvatarImage src={profileImage} />
-                    <AvatarFallback>{name.charAt(0)}</AvatarFallback>
-                    <AvatarBadge className="bg-green-600 dark:bg-green-600" />
-                </Avatar> */}
                 <AvatarWithIndicator otherParticipantId={_id} profileImage={profileImage} name={name} />
             </ItemMedia>
             <ItemContent>

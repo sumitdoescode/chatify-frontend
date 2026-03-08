@@ -1,6 +1,5 @@
 "use client";
 
-import { NumberFieldDecrement } from "@base-ui/react";
 import { createContext, useContext, useEffect, useState } from "react";
 import { io, Socket } from "socket.io-client";
 
@@ -22,7 +21,7 @@ export default function SocketProvider({ children }: { children: React.ReactNode
         const socket = io(process.env.NEXT_PUBLIC_BACKEND_URL!, {
             withCredentials: true,
         });
-        socket.on("getOnlineUsers", (users) => {
+        socket.on("getOnlineUsers", (users: string[]) => {
             setOnlineUsersId(users);
         });
         setSocket(socket);
