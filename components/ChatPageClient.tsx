@@ -102,7 +102,7 @@ export default function ChatPageClient({ chatId }: { chatId: string }) {
     }, [chatId, router]);
 
     return (
-        <div className="h-screen flex flex-col">
+        <div className="flex h-full min-h-0 flex-col overflow-hidden">
             <ChatHeader user={user} chatId={chatId} />
             <ChatContent key={chatId} chatId={chatId} messages={messages} otherUserId={receiverId} pagination={pagination} />
             <ChatFooter receiverId={receiverId} />

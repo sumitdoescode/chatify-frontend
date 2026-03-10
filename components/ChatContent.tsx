@@ -94,11 +94,11 @@ export function ChatContent({ chatId, messages, otherUserId, pagination }: { cha
     };
 
     if (!localMessages.length) {
-        return <div className="flex flex-1 items-center justify-center text-sm text-muted-foreground">No messages yet. Start the conversation.</div>;
+        return <div className="flex min-h-0 flex-1 items-center justify-center text-sm text-muted-foreground">No messages yet. Start the conversation.</div>;
     }
 
     return (
-        <div ref={scrollRef} className="flex flex-col gap-4 p-4 overflow-y-auto flex-1">
+        <div ref={scrollRef} className="flex min-h-0 flex-1 flex-col gap-4 overflow-y-auto p-4">
             {localPagination.hasNext ? (
                 <Button type="button" variant="secondary" className="mx-auto" disabled={loadingOlder} onClick={loadOlderMessages}>
                     {loadingOlder ? "Loading..." : "Load older messages"}
