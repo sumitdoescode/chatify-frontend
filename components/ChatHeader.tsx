@@ -1,5 +1,4 @@
 "use client";
-import { Avatar, AvatarImage, AvatarFallback } from "@/components/ui/avatar";
 import { IUser } from "./Users";
 import { Button } from "@/components/ui/button";
 import { Trash2 } from "lucide-react";
@@ -9,14 +8,11 @@ import axios from "axios";
 import { toast } from "sonner";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
-import { useSocket } from "@/contexts/SockerProvider";
+import AvatarWithIndicator from "./AvatarWithIndicator";
 
 export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: string }) {
     const router = useRouter();
     const [deleting, setDeleting] = useState(false);
-
-    const { onlineUsersId } = useSocket();
-    const isOnline = onlineUsersId.includes(user?._id!);
 
     const deleteChat = async () => {
         if (!chatId) return;
@@ -39,16 +35,19 @@ export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: stri
     return (
         <div className="flex items-center justify-between p-4 border-b bg-background">
             <div className="flex items-center gap-3">
-                <Avatar className="size-12">
-                    <AvatarImage src={user?.profileImage} />
-                    <AvatarFallback>{user?.name?.charAt(0)}</AvatarFallback>
-                </Avatar>
+                <AvatarWithIndicator
+                    otherParticipantId={user?._id}
+                    profileImage={user?.profileImage}
+                    name={user?.name ?? "?"}
+                    avatarClassName="size-12"
+                    imageLoading="eager"
+                    imageFetchPriority="high"
+                />
 
                 <div>
                     <p className="text-base font-medium">
                         {user?.name} {user?.email ? <span className="text-muted-foreground font-normal">({user.email})</span> : null}
                     </p>
-                    <p className="text-sm text-muted-foreground">{isOnline ? "Online" : "Offline"}</p>
                 </div>
             </div>
 

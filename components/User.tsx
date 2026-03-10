@@ -1,6 +1,5 @@
 "use client";
 
-import { Avatar, AvatarFallback, AvatarImage, AvatarBadge } from "@/components/ui/avatar";
 import { Button } from "@/components/ui/button";
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { PlusIcon } from "lucide-react";
@@ -10,13 +9,18 @@ import axios from "axios";
 import { useState } from "react";
 import { Spinner } from "./ui/spinner";
 import AvatarWithIndicator from "./AvatarWithIndicator";
+import { useSidebar } from "./ui/sidebar";
 
 const User = ({ _id, name, email, profileImage }: IUser) => {
     const router = useRouter();
     const [resolving, setResolving] = useState(false);
+    const { isMobile, setOpenMobile } = useSidebar();
 
     const openChat = async () => {
         try {
+            if (isMobile) {
+                setOpenMobile(false);
+            }
             setResolving(true);
             const { data } = await axios.post(
                 `${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats/resolve`,
@@ -38,7 +42,7 @@ const User = ({ _id, name, email, profileImage }: IUser) => {
     return (
         <Item key={_id} className="border border-border hover:bg-secondary cursor-pointer" onClick={openChat}>
             <ItemMedia>
-                <AvatarWithIndicator otherParticipantId={_id} profileImage={profileImage} name={name} />
+                <AvatarWithIndicator otherParticipantId={_id} profileImage={profileImage} name={name} imageLoading="lazy" imageFetchPriority="low" />
             </ItemMedia>
             <ItemContent>
                 <ItemTitle className="text-base">{name}</ItemTitle>

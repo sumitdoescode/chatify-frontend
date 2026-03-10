@@ -1,3 +1,5 @@
+"use client";
+
 import { Item, ItemActions, ItemContent, ItemDescription, ItemMedia, ItemTitle } from "@/components/ui/item";
 import { Badge } from "@/components/ui/badge";
 import { IChat } from "./Chats";
@@ -5,15 +7,24 @@ import Link from "next/link";
 import dayjs from "dayjs";
 import { ImageIcon } from "lucide-react";
 import AvatarWithIndicator from "./AvatarWithIndicator";
+import { useSidebar } from "./ui/sidebar";
 
 const Chat = ({ _id, name, profileImage, lastMessage, lastMessageIsImage, unreadCount, createdAt, otherParticipantId }: IChat) => {
+    const { isMobile, setOpenMobile } = useSidebar();
     const previewText = lastMessage ? `${lastMessage.slice(0, 25)}...` : "No messages yet";
 
     return (
-        <Link href={`/chat/${_id}`}>
+        <Link
+            href={`/chat/${_id}`}
+            onClick={() => {
+                if (isMobile) {
+                    setOpenMobile(false);
+                }
+            }}
+        >
             <Item key={_id} className="border border-border hover:bg-secondary cursor-pointer">
                 <ItemMedia>
-                    <AvatarWithIndicator otherParticipantId={otherParticipantId} profileImage={profileImage} name={name} />
+                    <AvatarWithIndicator otherParticipantId={otherParticipantId} profileImage={profileImage} name={name} imageLoading="lazy" imageFetchPriority="low" />
                 </ItemMedia>
 
                 <ItemContent>
