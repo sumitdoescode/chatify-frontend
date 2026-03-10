@@ -2,7 +2,6 @@ import type { NextRequest } from "next/server";
 import { NextResponse } from "next/server";
 
 export async function proxy(request: NextRequest) {
-    console.log("coming inside proxy.ts");
     const { pathname } = request.nextUrl;
     const isAuthPage = pathname === "/login" || pathname === "/register";
     const isProtectedPage = pathname === "/" || pathname.startsWith("/chat");
@@ -12,20 +11,7 @@ export async function proxy(request: NextRequest) {
         return NextResponse.next();
     }
 
-    let isLoggedIn = false;
-
-    try {
-        const res = await fetch(`${process.env.BACKEND_URL}/api/users/me`, {
-            headers: {
-                cookie: request.headers.get("cookie") ?? "",
-            },
-            cache: "no-store",
-        });
-
-        isLoggedIn = res.status === 200;
-    } catch {
-        isLoggedIn = false;
-    }
+    const isLoggedIn = request.cookies.get("chatify_logged_in")?.value === "true";
 
     if (isProtectedPage && !isLoggedIn) {
         return NextResponse.redirect(new URL("/login", request.url));

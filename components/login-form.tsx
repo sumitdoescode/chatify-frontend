@@ -11,6 +11,7 @@ import { LoginSchema } from "@/schemas/user.schema";
 import axios from "axios";
 import { flattenError, z } from "zod";
 import { Spinner } from "./ui/spinner";
+import { setFrontendSessionCookie } from "@/lib/session-cookie";
 
 export function LoginForm({ className, ...props }: React.ComponentProps<"form">) {
     const router = useRouter();
@@ -30,6 +31,7 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
             setLoading(true);
             const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/login`, formData, { withCredentials: true });
             if (data.success) {
+                setFrontendSessionCookie();
                 toast.success("Login successful");
                 router.replace("/");
                 router.refresh();

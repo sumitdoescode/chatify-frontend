@@ -1,7 +1,9 @@
+"use client";
+
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty";
 import { Users as UsersIcon } from "lucide-react";
-import { cookies } from "next/headers";
 import ChatsClient from "./ChatsClient";
+import { useEffect, useState } from "react";
 
 export interface IChat {
     _id: string;
@@ -15,25 +17,36 @@ export interface IChat {
     otherParticipantId?: string;
 }
 
-const Chats = async () => {
-    const cookieStore = await cookies();
+const Chats = () => {
+    const [chats, setChats] = useState<IChat[]>([]);
 
-    let chats: IChat[] = [];
-    try {
-        const res = await fetch(`${process.env.BACKEND_URL}/api/chats`, {
-            headers: {
-                Cookie: cookieStore.toString(),
-            },
-        });
-        if (!res.ok) {
-            throw new Error("Failed to fetch chats");
-        }
-        const data = await res.json();
-        chats = data.chats;
-    } catch (error) {
-        console.log(error);
-        // toast("Failed to fetch chats");
-    }
+    useEffect(() => {
+        let ignore = false;
+
+        const loadChats = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/chats`, {
+                    credentials: "include",
+                });
+                if (!res.ok) {
+                    throw new Error("Failed to fetch chats");
+                }
+
+                const data = await res.json();
+                if (!ignore) {
+                    setChats(data.chats ?? []);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        loadChats();
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
 
     if (!chats.length) {
         return (

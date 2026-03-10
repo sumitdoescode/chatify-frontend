@@ -1,8 +1,10 @@
+"use client";
+
 import { Empty, EmptyDescription, EmptyHeader, EmptyMedia, EmptyTitle } from "./ui/empty";
 import { Users as UsersIcon } from "lucide-react";
-import { cookies } from "next/headers";
 import { ItemGroup } from "@/components/ui/item";
 import User from "./User";
+import { useEffect, useState } from "react";
 
 export interface IUser {
     _id: string;
@@ -11,24 +13,36 @@ export interface IUser {
     profileImage?: string;
 }
 
-const Users = async () => {
-    const cookieStore = await cookies();
+const Users = () => {
+    const [users, setUsers] = useState<IUser[]>([]);
 
-    let users: IUser[] = [];
-    try {
-        const res = await fetch(`${process.env.BACKEND_URL}/api/users`, {
-            headers: {
-                Cookie: cookieStore.toString(),
-            },
-        });
-        if (!res.ok) {
-            throw new Error("Failed to fetch users");
-        }
-        const data = await res.json();
-        users = data.users;
-    } catch (error) {
-        console.log(error);
-    }
+    useEffect(() => {
+        let ignore = false;
+
+        const loadUsers = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users`, {
+                    credentials: "include",
+                });
+                if (!res.ok) {
+                    throw new Error("Failed to fetch users");
+                }
+
+                const data = await res.json();
+                if (!ignore) {
+                    setUsers(data.users ?? []);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        loadUsers();
+
+        return () => {
+            ignore = true;
+        };
+    }, []);
 
     if (!users.length) {
         return (
@@ -38,7 +52,7 @@ const Users = async () => {
                         <UsersIcon />
                     </EmptyMedia>
                     <EmptyTitle>No Users Yet</EmptyTitle>
-                    <EmptyDescription>Our application currently doesn't have any users. Please try again later.</EmptyDescription>
+                    <EmptyDescription>Our application currently doesn&apos;t have any users. Please try again later.</EmptyDescription>
                 </EmptyHeader>
             </Empty>
         );

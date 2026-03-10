@@ -11,7 +11,7 @@ import { Spinner } from "./ui/spinner";
 import { toast } from "sonner";
 import { useRouter } from "next/navigation";
 import { Button } from "@/components/ui/button";
-import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle, DialogTrigger } from "@/components/ui/dialog";
+import { Dialog, DialogClose, DialogContent, DialogDescription, DialogFooter, DialogHeader, DialogTitle } from "@/components/ui/dialog";
 import { Input } from "@/components/ui/input";
 import { Label } from "@/components/ui/label";
 import Image from "next/image";
@@ -19,7 +19,8 @@ import { ImageIcon } from "lucide-react";
 import axios from "axios";
 import { EditProfileSchema } from "@/schemas/user.schema";
 import { flattenError } from "zod";
-import { Field, FieldDescription, FieldGroup, FieldError } from "@/components/ui/field";
+import { Field, FieldGroup, FieldError } from "@/components/ui/field";
+import { clearFrontendSessionCookie } from "@/lib/session-cookie";
 
 export function NavUser({ user }: { user: { name: string; email: string; profileImage: string } }) {
     const router = useRouter();
@@ -80,6 +81,7 @@ export function NavUser({ user }: { user: { name: string; email: string; profile
         await authClient.signOut({
             fetchOptions: {
                 onSuccess: () => {
+                    clearFrontendSessionCookie();
                     router.push("/login");
                 },
             },

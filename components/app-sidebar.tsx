@@ -1,24 +1,60 @@
+"use client";
+
 import { NavUser } from "@/components/nav-user";
-import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarRail, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
+import { Sidebar, SidebarContent, SidebarFooter, SidebarHeader, SidebarMenu, SidebarMenuItem, SidebarMenuButton } from "@/components/ui/sidebar";
 import { GalleryVerticalEndIcon } from "lucide-react";
 import { Tabs, TabsContent, TabsList, TabsTrigger } from "@/components/ui/tabs";
 import Users from "./Users";
 import Chats from "./Chats";
-import { cookies } from "next/headers";
-import { redirect } from "next/navigation";
+import { useEffect, useState } from "react";
+import { useRouter } from "next/navigation";
+import { clearFrontendSessionCookie } from "@/lib/session-cookie";
 
-export async function AppSidebar() {
-    const cookieStore = await cookies();
+type SidebarUser = {
+    name: string;
+    email: string;
+    profileImage: string;
+};
 
-    const res = await fetch(`${process.env.BACKEND_URL}/api/users/me`, {
-        headers: {
-            Cookie: cookieStore.toString(),
-        },
-    });
-    // if (res.status === 401) {
-    //     redirect("/login");
-    // }
-    const { user } = await res.json();
+export function AppSidebar() {
+    const router = useRouter();
+    const [user, setUser] = useState<SidebarUser | null>(null);
+
+    useEffect(() => {
+        let ignore = false;
+
+        const loadUser = async () => {
+            try {
+                const res = await fetch(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/me`, {
+                    credentials: "include",
+                });
+
+                if (res.status === 401) {
+                    clearFrontendSessionCookie();
+                    router.replace("/login");
+                    return;
+                }
+
+                if (!res.ok) {
+                    throw new Error("Failed to fetch current user");
+                }
+
+                const data = await res.json();
+                if (!ignore) {
+                    setUser(data.user);
+                }
+            } catch (error) {
+                console.log(error);
+            }
+        };
+
+        loadUser();
+
+        return () => {
+            ignore = true;
+        };
+    }, [router]);
+
     return (
         <Sidebar collapsible="offcanvas">
             <SidebarHeader>
@@ -58,9 +94,11 @@ export async function AppSidebar() {
                 </Tabs>
             </SidebarContent>
 
-            <SidebarFooter>
-                <NavUser user={user} />
-            </SidebarFooter>
+            {user ? (
+                <SidebarFooter>
+                    <NavUser user={user} />
+                </SidebarFooter>
+            ) : null}
         </Sidebar>
     );
 }
