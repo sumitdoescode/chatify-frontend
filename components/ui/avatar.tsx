@@ -2,7 +2,6 @@
 
 import * as React from "react"
 import { Avatar as AvatarPrimitive } from "@base-ui/react/avatar"
-import Image from "next/image"
 
 import { cn } from "@/lib/utils"
 
@@ -28,46 +27,15 @@ function Avatar({
 
 function AvatarImage({
   className,
-  src,
-  alt,
-  sizes = "48px",
   ...props
-}: AvatarPrimitive.Image.Props & {
-  sizes?: string
-}) {
-  const imageClassName = cn(
-    "rounded-full aspect-square size-full object-cover",
-    className
-  )
-
-  if (!src || typeof src !== "string") {
-    return (
-      <AvatarPrimitive.Image
-        data-slot="avatar-image"
-        className={imageClassName}
-        src={src}
-        alt={alt}
-        {...props}
-      />
-    )
-  }
-
+}: AvatarPrimitive.Image.Props) {
   return (
     <AvatarPrimitive.Image
       data-slot="avatar-image"
-      className={imageClassName}
-      src={src}
-      alt={alt}
-      render={(renderProps) =>
-        <Image
-          {...renderProps}
-          src={src}
-          alt={alt ?? ""}
-          fill
-          sizes={sizes}
-          className={cn(imageClassName, renderProps.className)}
-        />
-      }
+      className={cn(
+        "rounded-full aspect-square size-full object-cover",
+        className
+      )}
       {...props}
     />
   )

@@ -83,6 +83,10 @@ export function ChatFooter({ receiverId }: { receiverId: string }) {
             )}
 
             <div className="flex items-center gap-2">
+                <Button type="button" variant="ghost" size="icon" disabled={sending} onClick={() => fileInputRef.current?.click()}>
+                    <ImageIcon className="size-5" />
+                </Button>
+
                 <Input
                     ref={messageInputRef}
                     placeholder="Type your message..."
@@ -104,10 +108,6 @@ export function ChatFooter({ receiverId }: { receiverId: string }) {
                         setImage(file);
                     }}
                 />
-
-                <Button type="button" variant="ghost" size="icon" disabled={sending} onClick={() => fileInputRef.current?.click()}>
-                    <ImageIcon className="w-4 h-4" />
-                </Button>
 
                 <Button size="icon" type="submit" disabled={sending || (!message.trim().length && !image)}>
                     {sending ? <Spinner /> : <Send className="w-4 h-4" />}

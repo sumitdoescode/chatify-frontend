@@ -46,7 +46,7 @@ export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: stri
 
                 <div>
                     <p className="text-base font-medium">
-                        {user?.name} {user?.email ? <span className="text-muted-foreground font-normal">({user.email})</span> : null}
+                        {user?.name} {user?.email ? <span className="text-[11px] text-muted-foreground font-normal">({user.email})</span> : null}
                     </p>
                 </div>
             </div>
