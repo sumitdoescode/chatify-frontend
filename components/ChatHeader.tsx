@@ -35,19 +35,11 @@ export function ChatHeader({ user, chatId }: { user: IUser | null; chatId?: stri
     return (
         <div className="flex items-center justify-between p-4 border-b bg-background">
             <div className="flex items-center gap-3">
-                <AvatarWithIndicator
-                    otherParticipantId={user?._id}
-                    profileImage={user?.profileImage}
-                    name={user?.name ?? "?"}
-                    avatarClassName="size-12"
-                    imageLoading="eager"
-                    imageFetchPriority="high"
-                />
+                <AvatarWithIndicator otherParticipantId={user?._id} profileImage={user?.profileImage} name={user?.name ?? "?"} avatarClassName="size-12" imageLoading="eager" imageFetchPriority="high" />
 
                 <div>
-                    <p className="text-base font-medium">
-                        {user?.name} {user?.email ? <span className="text-[11px] text-muted-foreground font-normal">({user.email})</span> : null}
-                    </p>
+                    <p className="text-base font-medium">{user?.name}</p>
+                    <p className="text-sm text-muted-foreground">{user?.email}</p>
                 </div>
             </div>
 
