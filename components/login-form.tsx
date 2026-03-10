@@ -31,8 +31,8 @@ export function LoginForm({ className, ...props }: React.ComponentProps<"form">)
             const { data } = await axios.post(`${process.env.NEXT_PUBLIC_BACKEND_URL}/api/users/login`, formData, { withCredentials: true });
             if (data.success) {
                 toast.success("Login successful");
-                // console.log(data);
-                router.push("/");
+                router.replace("/");
+                router.refresh();
             }
         } catch (error: any) {
             console.log(error);
