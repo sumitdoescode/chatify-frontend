@@ -40,7 +40,7 @@ function AvatarImage({
     className
   )
 
-  if (!src) {
+  if (!src || typeof src !== "string") {
     return (
       <AvatarPrimitive.Image
         data-slot="avatar-image"
