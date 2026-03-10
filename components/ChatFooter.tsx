@@ -72,7 +72,7 @@ export function ChatFooter({ receiverId }: { receiverId: string }) {
     };
 
     return (
-        <form onSubmit={sendMessage} className="flex flex-col gap-2 p-3 border-t bg-background">
+        <form onSubmit={sendMessage} className="flex flex-col gap-2 px-3 py-2 border-t bg-background">
             {previewUrl && (
                 <div className="relative w-fit">
                     <img src={previewUrl} alt="Selected preview" className="max-h-32 max-w-40 rounded-md border object-cover" />
